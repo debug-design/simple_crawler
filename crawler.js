@@ -21,7 +21,9 @@ request(pageToVisit, function(error, response, body) {
 
 
 var pageToVisit = "http://190.119.255.126/egasa/Formularios/Inicio.aspx";
+var results = [];
 console.log("Visiting page " + pageToVisit);
+
 request(pageToVisit, function(error, response, body) {
    if(error) {
      console.log("Error: " + error);
@@ -32,6 +34,16 @@ request(pageToVisit, function(error, response, body) {
      // Parse the document body
      var $ = cheerio.load(body);
      console.log("Page title:  " + $('title').text());
+
+    $('#Centro table tbody tr').not( $('#Centro table tbody tr').first() ).each(function(i, elem) {
+      results[i] = [];
+      $(this).children('td').each(function(j, elem) {
+        results[i][j] = $(this).text();
+        console.log( $(this).text() );
+      });
+      console.log( '-------' );
+    });
+    console.log( results );
    }
 });
 
