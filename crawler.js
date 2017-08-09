@@ -25,7 +25,7 @@ function requestEgasa(callback) {
         });
       });
       res ['data'] = data;
-      callback(data);
+      callback(res);
     }
   });
 }
