@@ -7,7 +7,14 @@ node crawler.js
 docker build -t juscah/simple_crawler .
 docker run -ti --rm -p 9090:9090 -v crawler:/data juscah/simple_crawler sh
 
-example url
+
+
+example url table
 ```
-http://190.119.255.126/egasa/Formularios/Charcani5.aspx?turbina=1&grupo=1&date=08%2F21%2F2017
+http://HOST:9090/
+```
+
+example url historico
+```
+http://HOST:9090/historico?turbina=1&grupo=1&date=08%2F21%2F2017
 ```
