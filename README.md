@@ -16,5 +16,5 @@ http://HOST:9090/
 
 example url historico
 ```
-http://HOST:9090/historico?turbina=1&grupo=1&date=08%2F21%2F2017
+http://HOST:9090/historico?turbina=5&grupo=2&fecha=01%2F02%2F2017
 ```
