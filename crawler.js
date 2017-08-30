@@ -272,7 +272,7 @@ function getCSV(pageToVisit, body, callback ) {
     encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1'])+'='+'BD2'+'&'+
     encodeURIComponent(_inputs[pageToVisit]['inputs'][grupo])+'='+ctl00ContentGrupo;
 
-  //console.log( request_body );
+  console.log( "Pidiendo csv", request_body );
 
   request.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -369,7 +369,8 @@ http.createServer(function(req, res){
   req.url = req.url.split('?')[0];
   if (params)
     params = parseParams( params );
-
+  
+  console.log ('REQUIRED:', req.url);
   if( req.url == '/' ) {
     requestEgasa(function(data){
       if( data === false ) {
@@ -383,8 +384,8 @@ http.createServer(function(req, res){
     });
   } else if( req.url == '/historico' ) {
     if (params && validateParams(params)) {
-      //console.log (params);
-      //console.log ('============');
+      console.log (params);
+      console.log ('============');
       requestHistorico(params, function(data){
         if( data === false ) {
           res.writeHead(404,{'Content-Type':'text/html'});
