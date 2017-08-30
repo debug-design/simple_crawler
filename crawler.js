@@ -15,7 +15,7 @@ function requestEgasa(callback) {
       console.log("Error: " + error);
     }
     // Check status code (200 is HTTP OK)
-    //console.log("Status code: " + response.statusCode);
+    console.log("Status code: " + response.statusCode);
     if(response.statusCode === 200) {
       // Parse the document body
       var $ = cheerio.load(body);
@@ -186,7 +186,7 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
     if(error)
       console.log("Error: " + error);
     
-    //console.log( "Seleccion de mes ok", response.statusCode );
+    console.log( "Seleccion de mes ok", response.statusCode );
     //console.log( "--------------------" );
     if(response.statusCode === 200) {
       if (--nums <= 0) callback(body);
@@ -239,7 +239,7 @@ function cambiarDia(pageToVisit, date, body, callback ) {
 
     if(error)
       console.log("Error: " + error);
-    //console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
+    console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
     //console.log( body );
     // obtener datos del formulario
     if(response.statusCode === 200) {
@@ -282,7 +282,7 @@ function getCSV(pageToVisit, body, callback ) {
 
     if(error)
       console.log("Error: " + error);
-    //console.log( "Tercera visita ok, csv descarga", response.statusCode );
+    console.log( "Tercera visita ok, csv descarga", response.statusCode );
     //console.log( body );
     // obtener datos del formulario
     if(response.statusCode === 200) {
