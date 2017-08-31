@@ -46,6 +46,9 @@ var _inputs = {
       'ctl00$RadioButtonList1': 'ctl00$RadioButtonList1',
       'grupo1': 'ctl00$ContentPlaceHolder1$Btn_DescG1',
       'grupo2': 'ctl00$ContentPlaceHolder1$Btn_DescG2',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupo2_img': 'ContentPlaceHolder1_Chart2',
+      'grupos': 2,
     }
   },
   'Charcani2': {
@@ -61,6 +64,10 @@ var _inputs = {
       'grupo1': 'ctl00$ContentPlaceHolder1$Btn_DescG1',
       'grupo2': 'ctl00$ContentPlaceHolder1$Btn_DescG2',
       'grupo3': 'ctl00$ContentPlaceHolder1$Btn_DescG3',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupo2_img': 'ContentPlaceHolder1_Chart2',
+      'grupo3_img': 'ContentPlaceHolder1_Chart3',
+      'grupos': 3,
     }
   },
   'Charcani3': {
@@ -75,6 +82,9 @@ var _inputs = {
       'ctl00$RadioButtonList1': 'ctl00$RadioButtonList1',
       'grupo1': 'ctl00$ContentPlaceHolder1$Btn_DescG1',
       'grupo2': 'ctl00$ContentPlaceHolder1$Btn_DescG2',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupo2_img': 'ContentPlaceHolder1_Chart2',
+      'grupos': 2,
     }
   },
   'Charcani4': {
@@ -90,6 +100,10 @@ var _inputs = {
       'grupo1': 'ctl00$ContentPlaceHolder1$Btn_DescG1',
       'grupo2': 'ctl00$ContentPlaceHolder1$Btn_DescG2',
       'grupo3': 'ctl00$ContentPlaceHolder1$Btn_DescG3',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupo2_img': 'ContentPlaceHolder1_Chart2',
+      'grupo3_img': 'ContentPlaceHolder1_Chart3',
+      'grupos': 3,
     }
   },
   'Charcani5': {
@@ -105,6 +119,10 @@ var _inputs = {
       'grupo1': 'ctl00$ContentPlaceHolder1$BTN_DescG1',
       'grupo2': 'ctl00$ContentPlaceHolder1$BTN_DescG2',
       'grupo3': 'ctl00$ContentPlaceHolder1$BTN_DescG3',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupo2_img': 'ContentPlaceHolder1_Chart2',
+      'grupo3_img': 'ContentPlaceHolder1_Chart3',
+      'grupos': 3,
     }
   },
   'Charcani6': {
@@ -118,6 +136,8 @@ var _inputs = {
       'ctl00$TextBoxClave': 'ctl00$TextBoxClave',
       'ctl00$RadioButtonList1': 'ctl00$RadioButtonList1',
       'grupo1': 'ctl00$ContentPlaceHolder1$Btn_DescG1',
+      'grupo1_img': 'ContentPlaceHolder1_Chart1',
+      'grupos': 1,
     }
   },
 };
@@ -126,7 +146,7 @@ function dateToNumber(fecha) {
   var dateBase = new Date("07/30/2017");
   var dateBaseNum = 6420;
   var timeDiff = fecha.getTime() - dateBase.getTime();
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return dateBaseNum + diffDays;
 }
 
@@ -147,7 +167,6 @@ function diffMonths(fecha1, fecha2) {
 }
 
 
-var grupo = '';
 var today;
 
 function cambiarMes(pageToVisit, cont, nums, body, callback ) {
@@ -160,7 +179,6 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
   var ctl00TextBoxUsuario = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario']+'"]').val() || "" );
   var ctl00TextBoxClave = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave']+'"]').val() || "" );
   var ctl00RadioButtonList1 = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1']+'"]').val() || "" );
-  var ctl00ContentGrupo = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs'][grupo]+'"]').val() || "" );
 
   // seleccionamos mes
   EVENTTARGET = encodeURIComponent('ctl00$Calendar1');
@@ -176,7 +194,7 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
     encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1'])+'='+'BD2';
 
   //console.log( "--------------------" );
-  //console.log("requiriendo mes: ", new Date( today.getFullYear(), today.getMonth()-cont, 1 ));
+  // console.log("requiriendo mes: ", new Date( today.getFullYear(), today.getMonth()-cont, 1 ));
   //console.log( request_body );
   request.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -185,9 +203,9 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
   }, function(error, response, body){
     if(error)
       console.log("Error: " + error);
-    
-    //console.log( "Seleccion de mes ok", response.statusCode );
-    //console.log( "--------------------" );
+
+    // console.log( "Seleccion de mes ok", response.statusCode );
+    // console.log( "--------------------" );
     if(response.statusCode === 200) {
       if (--nums <= 0) callback(body);
       else cambiarMes( pageToVisit, cont, nums, body, callback );
@@ -207,14 +225,13 @@ function cambiarDia(pageToVisit, date, body, callback ) {
   var ctl00TextBoxUsuario = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario']+'"]').val() || "" );
   var ctl00TextBoxClave = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave']+'"]').val() || "" );
   var ctl00RadioButtonList1 = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1']+'"]').val() || "" );
-  var ctl00ContentGrupo = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs'][grupo]+'"]').val() || "" );
 
   // seleccionamos fecha
   //var date = new Date("08/18/2017");
   var dateBase = new Date("07/30/2017");
   var dateBaseNum = 6420;
   var timeDiff = date.getTime() - dateBase.getTime();
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   date = dateBaseNum + diffDays;
   //console.log( date );
 
@@ -239,7 +256,7 @@ function cambiarDia(pageToVisit, date, body, callback ) {
 
     if(error)
       console.log("Error: " + error);
-    //console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
+    // console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
     //console.log( body );
     // obtener datos del formulario
     if(response.statusCode === 200) {
@@ -250,11 +267,92 @@ function cambiarDia(pageToVisit, date, body, callback ) {
   });
 }
 
-function getCSV(pageToVisit, body, callback ) {
+function getImages(pageToVisit, body, callback ) {
   $ = cheerio.load(body);
 
-
   var EVENTTARGET = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTTARGET']+'"]').val() || "" );
+  var EVENTARGUMENT = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTARGUMENT']+'"]').val() || "" );
+  var VIEWSTATE = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__VIEWSTATE']+'"]').val() || "" );
+  var EVENTVALIDATION = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTVALIDATION']+'"]').val() || "" );
+  var ctl00TextBoxUsuario = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario']+'"]').val() || "" );
+  var ctl00TextBoxClave = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave']+'"]').val() || "" );
+  var ctl00RadioButtonList1 = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1']+'"]').val() || "" );
+  var ctl00ContentGrupo = encodeURIComponent( $('input[name="ctl00$ContentPlaceHolder1$Btn_graficar"]').val() || "" );
+
+  var request_body = encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTTARGET'])+'='+EVENTTARGET+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTARGUMENT'])+'='+EVENTARGUMENT+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__VIEWSTATE'])+'='+VIEWSTATE+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTVALIDATION'])+'='+EVENTVALIDATION+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario'])+'='+ctl00TextBoxUsuario+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave'])+'='+ctl00TextBoxClave+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1'])+'='+'BD2'+'&'+
+    encodeURIComponent("ctl00$ContentPlaceHolder1$Btn_graficar")+'='+ctl00ContentGrupo;
+
+  //console.log( 'get form with graphic', request_body );
+
+  var request_cook = request.defaults({jar: true})
+
+  request_cook.post({
+    headers: {'content-type' : 'application/x-www-form-urlencoded'},
+    url:     _inputs[pageToVisit]['url'],
+    body:    request_body
+  }, function(error, response, body){
+
+    if(error)
+      console.log("Error: " + error);
+    // console.log( "getted ok, GRAPHIC descarga", response.statusCode );
+    //console.log( body );
+    // obtener datos del formulario
+    if(response.statusCode === 200) {
+      $ = cheerio.load(body);
+
+      // console.log(response.headers);
+
+//      var cookies = response.headers['set-cookie'][0];
+
+      var url_imgs = []
+      for( var i=1; i <= _inputs[pageToVisit]['inputs']['grupos']; ++i )
+        url_imgs.push( 'http://190.119.255.126'+$(`#${_inputs[pageToVisit]['inputs'][`grupo${i}_img`]}`).attr('src') )
+
+      // console.log( url_imgs )
+
+      var count = url_imgs.length;
+      var fail = false;
+      var res = {};
+      res.data = [];
+      res.size = url_imgs.length;
+      url_imgs.forEach(function(url) {
+        request_cook({
+          url: url,
+          method: 'GET',
+        }, function(error, response, body) {
+          if(error)
+            console.log("Error: " + error);
+          // Check status code (200 is HTTP OK)
+          // console.log("Status code: " + response.statusCode);
+          if (fail) return;
+          if(response.statusCode === 200) {
+            // Parse the document body
+            //console.log(body);
+            res.data.push( body );
+            // console.log(count);
+            if(--count == 0)
+              callback(res);
+          } else {
+            fail = true;
+            callback(false);
+          }
+        });  
+      }, this);
+  
+      
+    } else {
+      callback(false);
+    }
+   
+  });
+
+  /*var EVENTTARGET = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTTARGET']+'"]').val() || "" );
   var EVENTARGUMENT = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTARGUMENT']+'"]').val() || "" );
   var VIEWSTATE = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__VIEWSTATE']+'"]').val() || "" );
   var EVENTVALIDATION = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTVALIDATION']+'"]').val() || "" );
@@ -299,14 +397,13 @@ function getCSV(pageToVisit, body, callback ) {
       callback(false);
     }
    
-  });
+  });*/
 }
 
 
 
 function requestHistorico( params, callback ) {
   var pageToVisit = "Charcani" + params['turbina'];
-  grupo = "grupo" + params['grupo'];
   var date = new Date(params['fecha']); // 08/21/2017
   today = new Date(UTCTolimaTime( new Date().toISOString() ));
 
@@ -317,7 +414,7 @@ function requestHistorico( params, callback ) {
     if(error)
       console.log("Error: " + error);
     // obtener datos del formulario
-    //console.log( "Primera visita ok" );
+    // console.log( "Primera visita ok" );
     if(response.statusCode === 200) {
       
       var num_months = diffMonths(date, today);
@@ -325,12 +422,12 @@ function requestHistorico( params, callback ) {
       if( num_months != 0) {
         cambiarMes(pageToVisit, cont, num_months, body, function(body){
           cambiarDia(pageToVisit, date, body, function(body){
-            getCSV(pageToVisit, body, callback);
+            getImages(pageToVisit, body, callback);
           });
         });
       } else {
         cambiarDia(pageToVisit, date, body, function(body){
-          getCSV(pageToVisit, body, callback);
+          getImages(pageToVisit, body, callback);
         });
       }
 
@@ -352,12 +449,10 @@ function parseParams( params ){
 
 function validateParams( params ){
   //console.log ("validating")
-  if( params['turbina'] && params['grupo'] && params['fecha'] ) {
+  if( params['turbina'] && params['fecha'] ) {
     var turbina = parseInt( params['turbina'] );
-    var grupo = parseInt( params['grupo'] );
     //console.log ("good")
     if( turbina>=1 && turbina<=6 )
-      if( grupo>=1 && grupo<=3 )
         return true;
   }
   //console.log ("bad")
@@ -383,15 +478,16 @@ http.createServer(function(req, res){
     });
   } else if( req.url == '/historico' ) {
     if (params && validateParams(params)) {
-      //console.log (params);
-      //console.log ('============');
+      // console.log (params);
+      // console.log ('============');
       requestHistorico(params, function(data){
         if( data === false ) {
           res.writeHead(404,{'Content-Type':'text/html'});
           res.end('500 error');
         } else {
           res.writeHead(200, {'Content-Type': 'application/json'});
-          res.write(JSON.stringify(data));
+          //res.write(JSON.stringify(data));
+          res.write(JSON.stringify(data), function(err) { res.end(); });
           res.end();
         }
       });
