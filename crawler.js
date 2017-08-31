@@ -253,8 +253,86 @@ function cambiarDia(pageToVisit, date, body, callback ) {
 function getCSV(pageToVisit, body, callback ) {
   $ = cheerio.load(body);
 
-
   var EVENTTARGET = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTTARGET']+'"]').val() || "" );
+  var EVENTARGUMENT = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTARGUMENT']+'"]').val() || "" );
+  var VIEWSTATE = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__VIEWSTATE']+'"]').val() || "" );
+  var EVENTVALIDATION = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTVALIDATION']+'"]').val() || "" );
+  var ctl00TextBoxUsuario = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario']+'"]').val() || "" );
+  var ctl00TextBoxClave = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave']+'"]').val() || "" );
+  var ctl00RadioButtonList1 = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1']+'"]').val() || "" );
+  var ctl00ContentGrupo = encodeURIComponent( $('input[name="ctl00$ContentPlaceHolder1$Btn_graficar"]').val() || "" );
+
+  var request_body = encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTTARGET'])+'='+EVENTTARGET+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTARGUMENT'])+'='+EVENTARGUMENT+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__VIEWSTATE'])+'='+VIEWSTATE+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['__EVENTVALIDATION'])+'='+EVENTVALIDATION+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$TextBoxUsuario'])+'='+ctl00TextBoxUsuario+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$TextBoxClave'])+'='+ctl00TextBoxClave+'&'+
+    encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1'])+'='+'BD2'+'&'+
+    encodeURIComponent("ctl00$ContentPlaceHolder1$Btn_graficar")+'='+ctl00ContentGrupo;
+
+  console.log( 'get form with graphic', request_body );
+
+  var request_cook = request.defaults({jar: true})
+
+  request_cook.post({
+    headers: {'content-type' : 'application/x-www-form-urlencoded'},
+    url:     _inputs[pageToVisit]['url'],
+    body:    request_body
+  }, function(error, response, body){
+
+    if(error)
+      console.log("Error: " + error);
+    console.log( "getted ok, GRAPHIC descarga", response.statusCode );
+    //console.log( body );
+    // obtener datos del formulario
+    if(response.statusCode === 200) {
+      $ = cheerio.load(body);
+
+      console.log(response.headers);
+
+//      var cookies = response.headers['set-cookie'][0];
+
+      var url_imgs = []
+      url_imgs.push( 'http://190.119.255.126'+$('#ContentPlaceHolder1_Chart1').attr('src') )
+      url_imgs.push( 'http://190.119.255.126'+$('#ContentPlaceHolder1_Chart2').attr('src') )
+      url_imgs.push( 'http://190.119.255.126'+$('#ContentPlaceHolder1_Chart3').attr('src') )
+
+      var count = url_imgs.length;
+      var res = {};
+      res.data = [];
+      res.size = url_imgs.length;
+      url_imgs.forEach(function(url) {
+        request_cook({
+          url: url,
+          method: 'GET',
+          }, function(error, response, body) {
+          if(error) {
+            console.log("Error: " + error);
+          }
+          // Check status code (200 is HTTP OK)
+          console.log("Status code: " + response.statusCode);
+          if(response.statusCode === 200) {
+            // Parse the document body
+            //console.log(body);
+            res.data.push( body );
+            console.log(count);
+            if(--count == 0)
+              callback(res);
+          } else {
+            callback(false);
+          }
+        });  
+      }, this);
+  
+      
+    } else {
+      callback(false);
+    }
+   
+  });
+
+  /*var EVENTTARGET = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTTARGET']+'"]').val() || "" );
   var EVENTARGUMENT = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTARGUMENT']+'"]').val() || "" );
   var VIEWSTATE = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__VIEWSTATE']+'"]').val() || "" );
   var EVENTVALIDATION = encodeURIComponent( $('input[name="'+_inputs[pageToVisit]['inputs']['__EVENTVALIDATION']+'"]').val() || "" );
@@ -299,7 +377,7 @@ function getCSV(pageToVisit, body, callback ) {
       callback(false);
     }
    
-  });
+  });*/
 }
 
 
@@ -391,7 +469,8 @@ http.createServer(function(req, res){
           res.end('500 error');
         } else {
           res.writeHead(200, {'Content-Type': 'application/json'});
-          res.write(JSON.stringify(data));
+          //res.write(JSON.stringify(data));
+          res.write(JSON.stringify(data), function(err) { res.end(); });
           res.end();
         }
       });
