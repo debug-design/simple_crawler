@@ -146,7 +146,7 @@ function dateToNumber(fecha) {
   var dateBase = new Date("07/30/2017");
   var dateBaseNum = 6420;
   var timeDiff = fecha.getTime() - dateBase.getTime();
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return dateBaseNum + diffDays;
 }
 
@@ -194,7 +194,7 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
     encodeURIComponent(_inputs[pageToVisit]['inputs']['ctl00$RadioButtonList1'])+'='+'BD2';
 
   //console.log( "--------------------" );
-  console.log("requiriendo mes: ", new Date( today.getFullYear(), today.getMonth()-cont, 1 ));
+  // console.log("requiriendo mes: ", new Date( today.getFullYear(), today.getMonth()-cont, 1 ));
   //console.log( request_body );
   request.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -203,9 +203,9 @@ function cambiarMes(pageToVisit, cont, nums, body, callback ) {
   }, function(error, response, body){
     if(error)
       console.log("Error: " + error);
-    
-    console.log( "Seleccion de mes ok", response.statusCode );
-    console.log( "--------------------" );
+
+    // console.log( "Seleccion de mes ok", response.statusCode );
+    // console.log( "--------------------" );
     if(response.statusCode === 200) {
       if (--nums <= 0) callback(body);
       else cambiarMes( pageToVisit, cont, nums, body, callback );
@@ -231,7 +231,7 @@ function cambiarDia(pageToVisit, date, body, callback ) {
   var dateBase = new Date("07/30/2017");
   var dateBaseNum = 6420;
   var timeDiff = date.getTime() - dateBase.getTime();
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   date = dateBaseNum + diffDays;
   //console.log( date );
 
@@ -256,7 +256,7 @@ function cambiarDia(pageToVisit, date, body, callback ) {
 
     if(error)
       console.log("Error: " + error);
-    console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
+    // console.log( "Cambio de dia visita ok, fecha cambiada", response.statusCode );
     //console.log( body );
     // obtener datos del formulario
     if(response.statusCode === 200) {
@@ -300,13 +300,13 @@ function getImages(pageToVisit, body, callback ) {
 
     if(error)
       console.log("Error: " + error);
-    console.log( "getted ok, GRAPHIC descarga", response.statusCode );
+    // console.log( "getted ok, GRAPHIC descarga", response.statusCode );
     //console.log( body );
     // obtener datos del formulario
     if(response.statusCode === 200) {
       $ = cheerio.load(body);
 
-      console.log(response.headers);
+      // console.log(response.headers);
 
 //      var cookies = response.headers['set-cookie'][0];
 
@@ -314,7 +314,7 @@ function getImages(pageToVisit, body, callback ) {
       for( var i=1; i <= _inputs[pageToVisit]['inputs']['grupos']; ++i )
         url_imgs.push( 'http://190.119.255.126'+$(`#${_inputs[pageToVisit]['inputs'][`grupo${i}_img`]}`).attr('src') )
 
-      console.log( url_imgs )
+      // console.log( url_imgs )
 
       var count = url_imgs.length;
       var fail = false;
@@ -329,13 +329,13 @@ function getImages(pageToVisit, body, callback ) {
           if(error)
             console.log("Error: " + error);
           // Check status code (200 is HTTP OK)
-          console.log("Status code: " + response.statusCode);
+          // console.log("Status code: " + response.statusCode);
           if (fail) return;
           if(response.statusCode === 200) {
             // Parse the document body
             //console.log(body);
             res.data.push( body );
-            console.log(count);
+            // console.log(count);
             if(--count == 0)
               callback(res);
           } else {
@@ -414,7 +414,7 @@ function requestHistorico( params, callback ) {
     if(error)
       console.log("Error: " + error);
     // obtener datos del formulario
-    console.log( "Primera visita ok" );
+    // console.log( "Primera visita ok" );
     if(response.statusCode === 200) {
       
       var num_months = diffMonths(date, today);
@@ -478,8 +478,8 @@ http.createServer(function(req, res){
     });
   } else if( req.url == '/historico' ) {
     if (params && validateParams(params)) {
-      console.log (params);
-      console.log ('============');
+      // console.log (params);
+      // console.log ('============');
       requestHistorico(params, function(data){
         if( data === false ) {
           res.writeHead(404,{'Content-Type':'text/html'});
