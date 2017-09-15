@@ -290,7 +290,7 @@ function getImages(pageToVisit, body, callback ) {
 
   //console.log( 'get form with graphic', request_body );
 
-  var request_cook = request.defaults({jar: true})
+  var request_cook = request.defaults({jar: true, encoding: null})
 
   request_cook.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -321,6 +321,10 @@ function getImages(pageToVisit, body, callback ) {
       var res = {};
       res.data = [];
       res.size = url_imgs.length;
+      /*request_cook({
+        url: url_imgs[0],
+        method: 'GET',
+      }).pipe(require("fs").createWriteStream('doodle.png'))*/
       url_imgs.forEach(function(url) {
         request_cook({
           url: url,
@@ -334,8 +338,10 @@ function getImages(pageToVisit, body, callback ) {
           if(response.statusCode === 200) {
             // Parse the document body
             //console.log(body);
-            //body = new Buffer(body, 'binary').toString("base64")
             body = new Buffer(body).toString("base64")
+            /*require("fs").writeFile("out.png", body, 'base64', function(err) {
+              console.log(err);
+            });*/
             res.data.push( body );
             // console.log(count);
             if(--count == 0)
@@ -344,8 +350,7 @@ function getImages(pageToVisit, body, callback ) {
             fail = true;
             callback(false);
           }
-        });  
-      }, this);
+        })}, this)
   
       
     } else {
@@ -461,7 +466,7 @@ function validateParams( params ){
   return false;
 }
 
-http.createServer(function(req, res){
+http.createServer(function(req, res) {
   var params = req.url.split('?')[1];
   req.url = req.url.split('?')[0];
   if (params)
