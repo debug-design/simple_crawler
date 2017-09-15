@@ -334,6 +334,7 @@ function getImages(pageToVisit, body, callback ) {
           if(response.statusCode === 200) {
             // Parse the document body
             //console.log(body);
+            body = new Buffer(body, 'binary').toString("base64")
             res.data.push( body );
             // console.log(count);
             if(--count == 0)
@@ -481,6 +482,7 @@ http.createServer(function(req, res){
       // console.log (params);
       // console.log ('============');
       requestHistorico(params, function(data){
+        //console.log(data)
         if( data === false ) {
           res.writeHead(404,{'Content-Type':'text/html'});
           res.end('500 error');
